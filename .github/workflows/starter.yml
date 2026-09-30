@@ -1,0 +1,37 @@
+name: Starter environments
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        task: [fullstack, ml-mlops, qa-sdet]
+    defaults:
+      run:
+        working-directory: ${{ matrix.task }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and start isolated environment
+        run: docker compose up -d --build --wait
+      - name: Agent infrastructure checks
+        if: matrix.task != 'fullstack'
+        run: |
+          docker compose exec -T agent npm run typecheck
+          docker compose exec -T agent npm test
+          docker compose exec -T -e AGENT_URL=http://localhost:8090 agent npm run preflight
+      - name: Source fixture checks
+        if: matrix.task == 'fullstack'
+        run: |
+          docker compose exec -T source-mock uv run --group dev python -m pytest
+          docker compose exec -T source-mock uv run --group dev ruff check .
+          docker compose exec -T source-mock uv run --group dev ty check source scripts tests
+      - name: Logs
+        if: failure()
+        run: docker compose logs --tail 100
+      - name: Stop this environment
+        if: always()
+        run: docker compose down -v
