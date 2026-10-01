@@ -1,0 +1,58 @@
+Снимок до исправления дефекта
+Состояние кода: дефект в src/adapter.ts на месте, src/ не изменён
+Команда: docker compose up -d --build --wait
+         docker compose exec -T agent npm test
+4/6 тестов success (2 регрессионных падают на timeout)
+
+----------------------------------------------------------------------
+
+> interview-ml-mlops@1.0.0 test
+> tsx --test tests/*.test.ts
+
+✖ timeout stays a failure and never becomes an empty success (2.844417ms)
+✖ the event log records the status the source actually returned (0.403875ms)
+✔ an empty period stays a successful read (0.456667ms)
+✔ server denies a foreign account even when called directly (2.536417ms)
+✔ fixture preserves exact amounts (0.228042ms)
+✔ unknown sessions are rejected (0.049916ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 4
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 192.760959
+
+✖ failing tests:
+
+test at tests/adapter.test.ts:6:1
+✖ timeout stays a failure and never becomes an empty success (2.844417ms)
+  AssertionError [ERR_ASSERTION]: Expected "actual" to be strictly unequal to: 'ok'
+      at TestContext.<anonymous> (/app/tests/adapter.test.ts:9:10)
+      at async Test.run (node:internal/test_runner/test:1125:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ok',
+    expected: 'ok',
+    operator: 'notStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests/adapter.test.ts:13:1
+✖ the event log records the status the source actually returned (0.403875ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  'timeout' !== 'ok'
+
+      at TestContext.<anonymous> (/app/tests/adapter.test.ts:18:10)
+      at async Test.run (node:internal/test_runner/test:1125:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'timeout',
+    expected: 'ok',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

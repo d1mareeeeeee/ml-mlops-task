@@ -5,6 +5,11 @@
 !**/.env.example
 **/artifacts/*
 !**/artifacts/.gitkeep
+!**/artifacts/*.jsonl
+!**/artifacts/*.json
+!**/artifacts/*.md
+!**/artifacts/*.txt
+**/artifacts/eval-report.*
 **/__pycache__/
 **/.pytest_cache/
 **/.ruff_cache/

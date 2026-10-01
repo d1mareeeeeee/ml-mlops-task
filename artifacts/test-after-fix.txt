@@ -1,0 +1,25 @@
+Снимок после исправления дефекта
+Состояние кода: из src/adapter.ts убран спецслучай для timeout, src/ не изменён
+Команда: docker compose up -d --build --wait
+         docker compose exec -T agent npm test
+6/6 тестов success (те же 2 регрессионных, что падали до правки, проходят)
+
+----------------------------------------------------------------------
+
+> interview-ml-mlops@1.0.0 test
+> tsx --test tests/*.test.ts
+
+✔ timeout stays a failure and never becomes an empty success (2.591709ms)
+✔ the event log records the status the source actually returned (0.229125ms)
+✔ an empty period stays a successful read (0.395708ms)
+✔ server denies a foreign account even when called directly (2.661292ms)
+✔ fixture preserves exact amounts (0.24875ms)
+✔ unknown sessions are rejected (0.05075ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 183.891251
