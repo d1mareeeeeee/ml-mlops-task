@@ -13,6 +13,10 @@ dev = [
     "ty>=0.0.84",
 ]
 
+[tool.pytest.ini_options]
+# tests/test_evaluate.py импортирует scripts/evaluate.py
+pythonpath = ["scripts"]
+
 [tool.ruff]
 line-length = 100
 target-version = "py312"
